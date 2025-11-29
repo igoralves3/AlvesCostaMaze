@@ -18,6 +18,7 @@ class ALVESCOSTAMAZE_API UMyRPGAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	UMyRPGAttributeSet();
 
 	// Define o Atributo "Charge"
@@ -28,6 +29,14 @@ public:
 	// Função necessária para Multiplayer (Replication)
 	UFUNCTION()
 	virtual void OnRep_Charge(const FGameplayAttributeData& OldCharge);
+
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Speed)
+	FGameplayAttributeData Speed;
+	ATTRIBUTE_ACCESSORS(UMyRPGAttributeSet, Speed)
+	
+	UFUNCTION()
+	virtual void OnRep_Speed(const FGameplayAttributeData& OldSpeed);
 
 	// Boilerplate para replicação
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
