@@ -37,7 +37,27 @@ public:
 	
 	UFUNCTION()
 	virtual void OnRep_Speed(const FGameplayAttributeData& OldSpeed);
+	// Vida Atual
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UMyRPGAttributeSet, Health);
+
+	// Vida Máxima (Para limitar a cura)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UMyRPGAttributeSet, MaxHealth);
+
+	// Funções de Replicação
+	UFUNCTION()
+	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
+
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+
+	// Função Extra: Para garantir que a vida nunca fique negativa ou maior que o máximo
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	// Boilerplate para replicação
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };
